@@ -4,11 +4,11 @@ import psycopg2
 
 def articles():
     articles_query = '''
-        SELECT title, COUNT(*) AS views
+        SELECT title, COUNT(*) AS num
         FROM articles, log
         WHERE articles.slug = SUBSTR(log.path, 10)
         GROUP BY title
-        ORDER BY views DESC LIMIT 3;
+        ORDER BY num DESC LIMIT 3;
     '''
     results = get_query(articles_query)
     print('\nWhat are the most popular three articles of all time?\n')
@@ -18,12 +18,12 @@ def articles():
 
 def authors():
     authors_query = '''
-        SELECT name, COUNT(*) AS views
+        SELECT name, COUNT(*) AS num
         FROM authors, articles, log
         WHERE articles.slug = SUBSTR(log.path,10)
         AND articles.author = authors.id
         GROUP BY name
-        ORDER BY views DESC;
+        ORDER BY num DESC;
     '''
     results = get_query(authors_query)
     print('\nWho are the most popular article authors of all time?\n')
